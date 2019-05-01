@@ -1,0 +1,18 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/config.2.0.schema.json",
+  "version": "2.0",
+  "bundles": {
+    "aad-http-client-basic-graph-demo-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/aadHttpClientBasicGraphDemo/AadHttpClientBasicGraphDemoWebPart.js",
+          "manifest": "./src/webparts/aadHttpClientBasicGraphDemo/AadHttpClientBasicGraphDemoWebPart.manifest.json"
+        }
+      ]
+    }
+  },
+  "externals": {},
+  "localizedResources": {
+    "AadHttpClientBasicGraphDemoWebPartStrings": "lib/webparts/aadHttpClientBasicGraphDemo/loc/{locale}.js"
+  }
+}

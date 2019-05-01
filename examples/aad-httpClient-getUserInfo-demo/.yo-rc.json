@@ -1,0 +1,13 @@
+{
+  "@microsoft/generator-sharepoint": {
+    "version": "1.8.1",
+    "libraryName": "aad-http-client-get-user-info-demo",
+    "libraryId": "14480bd7-472e-4bd6-a144-5eb7a29e1b2e",
+    "environment": "spo",
+    "packageManager": "npm",
+    "framework": "none",
+    "isCreatingSolution": true,
+    "isDomainIsolated": false,
+    "componentType": "webpart"
+  }
+}

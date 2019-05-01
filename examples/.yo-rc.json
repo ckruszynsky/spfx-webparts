@@ -1,0 +1,16 @@
+{
+  "@pnp/generator-spfx": {
+    "framework": "none",
+    "pnpFramework": "none.plus",
+    "pnp-libraries": [],
+    "pnp-ci": [],
+    "pnp-vetting": [],
+    "spfxenv": "spo"
+  },
+  "@microsoft/generator-sharepoint": {
+    "environment": "spo",
+    "framework": "none",
+    "isCreatingSolution": true,
+    "whichFolder": "subdir"
+  }
+}
