@@ -1,0 +1,14 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/package-solution.schema.json",
+  "solution": {
+    "name": "msgraph-get-profile-example-client-side-solution",
+    "id": "0c873d0e-4f0b-4dc7-b363-5eba0ea22483",
+    "version": "1.0.0.0",
+    "includeClientSideAssets": true,
+    "skipFeatureDeployment": true,
+    "isDomainIsolated": false
+  },
+  "paths": {
+    "zippedPackage": "solution/msgraph-get-profile-example.sppkg"
+  }
+}

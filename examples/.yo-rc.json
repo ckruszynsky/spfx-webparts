@@ -1,15 +1,21 @@
 {
   "@pnp/generator-spfx": {
-    "framework": "none",
-    "pnpFramework": "none.plus",
-    "pnp-libraries": [],
+    "framework": "react",
+    "pnpFramework": "reactjs.plus",
+    "pnp-libraries": [
+      "@pnp/pnpjs",
+      "@pnp/spfx-property-controls",
+      "@pnp/spfx-controls-react"
+    ],
     "pnp-ci": [],
-    "pnp-vetting": [],
+    "pnp-vetting": [
+      "webpack-analyzer"
+    ],
     "spfxenv": "spo"
   },
   "@microsoft/generator-sharepoint": {
     "environment": "spo",
-    "framework": "none",
+    "framework": "react",
     "isCreatingSolution": true,
     "whichFolder": "subdir"
   }
