@@ -15,6 +15,7 @@
   },
   "@microsoft/generator-sharepoint": {
     "environment": "spo",
+    "componentType": "webpart",
     "framework": "react",
     "isCreatingSolution": true,
     "whichFolder": "subdir"
