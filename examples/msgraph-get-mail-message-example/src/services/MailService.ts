@@ -44,7 +44,7 @@ export class MailService {
         });
 
         messages.sort((m1,m2)=> 
-            m1.receivedDateTime > m2.receivedDateTime ? 1: -1);
+            m1.receivedDateTime > m2.receivedDateTime ? -1: 1);
         
         console.log(messages);
         return messages;
