@@ -1,0 +1,20 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/config.2.0.schema.json",
+  "version": "2.0",
+  "bundles": {
+    "graph-get-user-groups-example-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/graphGetUserGroupsExample/GraphGetUserGroupsExampleWebPart.js",
+          "manifest": "./src/webparts/graphGetUserGroupsExample/GraphGetUserGroupsExampleWebPart.manifest.json"
+        }
+      ]
+    }
+  },
+  "externals": {},
+  "localizedResources": {
+    "GraphGetUserGroupsExampleWebPartStrings": "lib/webparts/graphGetUserGroupsExample/loc/{locale}.js",
+    "ControlStrings": "node_modules/@pnp/spfx-controls-react/lib/loc/{locale}.js",
+    "PropertyControlStrings": "node_modules/@pnp/spfx-property-controls/lib/loc/{locale}.js"
+  }
+}

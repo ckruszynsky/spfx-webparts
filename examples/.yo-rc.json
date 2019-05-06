@@ -8,9 +8,7 @@
       "@pnp/spfx-controls-react"
     ],
     "pnp-ci": [],
-    "pnp-vetting": [
-      "webpack-analyzer"
-    ],
+    "pnp-vetting": [],
     "spfxenv": "spo"
   },
   "@microsoft/generator-sharepoint": {
