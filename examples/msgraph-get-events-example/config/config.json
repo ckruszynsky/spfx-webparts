@@ -1,0 +1,18 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/config.2.0.schema.json",
+  "version": "2.0",
+  "bundles": {
+    "graph-get-events-example-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/graphGetEventsExample/GraphGetEventsExampleWebPart.js",
+          "manifest": "./src/webparts/graphGetEventsExample/GraphGetEventsExampleWebPart.manifest.json"
+        }
+      ]
+    }
+  },
+  "externals": {},
+  "localizedResources": {
+    "GraphGetEventsExampleWebPartStrings": "lib/webparts/graphGetEventsExample/loc/{locale}.js"
+  }
+}
