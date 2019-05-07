@@ -1,7 +1,13 @@
 declare interface IMsGraphUserProfileWebPartStrings {
   PropertyPaneDescription: string;
-  BasicGroupName: string;
-  DescriptionFieldLabel: string;
+  ShowPhotoTargetProperty: string;
+  ShowPhotoLabel: string;  
+  ShowPhotoCalloutText:string;
+  ShowPhotoOnText:string;
+  ShowPhotoOffText:string;
+  PersonaSizeTargetProperty:string;
+  PersonaSizeLabel:string;
+
 }
 
 declare module 'MsGraphUserProfileWebPartStrings' {
