@@ -7,6 +7,8 @@ define([], function() {
     "ShowPhotoOnText": "Display user's  profile photo",
     "SHowPhotoOffText":"Do not show user's photo",
     "PersonaSizeTargetProperty": "personaSize",
-    "PersonaSizeLabel": "Web Part Size"
+    "PersonaSizeLabel": "Web Part Size",
+    "GraphServiceURI" : "me",
+    "GraphServicePhotoURI":"/me/photo/$value"
   }
 });

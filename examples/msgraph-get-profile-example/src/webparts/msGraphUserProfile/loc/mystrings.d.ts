@@ -7,7 +7,8 @@ declare interface IMsGraphUserProfileWebPartStrings {
   ShowPhotoOffText:string;
   PersonaSizeTargetProperty:string;
   PersonaSizeLabel:string;
-
+  GraphServiceURI:string;
+  GraphServicePhotoURI:string;
 }
 
 declare module 'MsGraphUserProfileWebPartStrings' {

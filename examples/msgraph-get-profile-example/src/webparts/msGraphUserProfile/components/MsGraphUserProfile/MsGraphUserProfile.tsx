@@ -1,51 +1,49 @@
+import * as MicrosoftGraph from '@microsoft/microsoft-graph-types';
+import { FluentCustomizations } from '@uifabric/fluent-theme';
+import { Customizer } from 'office-ui-fabric-react';
+import { PersonaSize } from 'office-ui-fabric-react/lib/Persona';
 import * as React from 'react';
 
-import { IMsGraphUserProfileProps } from './IMsGraphUserProfileProps';
 import { UserProfileCard } from '../UserProfileCard/UserProfileCard';
-import { IMsGraphUserProfileState } from './IMsGraphUserProfileState';
-import { Customizer } from 'office-ui-fabric-react';
-import { FluentCustomizations } from '@uifabric/fluent-theme';
 
-export default class MsGraphUserProfile extends React.Component<
-  IMsGraphUserProfileProps,
-  IMsGraphUserProfileState
-> {
-  constructor(props) {
-    super(props);
-    this.state = {
-      userProfile: null,
-      photo: ""
-    };
-  }
+type MsGraphUserProfileProps = {
+  userProfile?: MicrosoftGraph.User;
+  photo?: string;  
+  personaSize: PersonaSize;
+};
 
-  public async componentDidMount(): Promise<void> {
-    const userProfile = await this.props.graphService.getUserProfile();
 
-    this.setState({
-      userProfile: userProfile.profile,
-      photo: userProfile.photo
-    });
-    return;
-  }
+type MsGraphUserProfileState = {
+  userProfile?: MicrosoftGraph.User;
+  photo?: string;
+};
 
-  public render(): React.ReactElement<IMsGraphUserProfileProps> {
-    const {userProfile, photo} = this.state;
-    let photoUrl = this.props.showUserProfilePhoto ? photo : "";  
+
+export default class MsGraphUserProfile extends React.Component<MsGraphUserProfileProps,MsGraphUserProfileState> {  
+
+  public static defaultProps = {
+    personaSize : PersonaSize.size48
+  };
+
+  public render(): React.ReactElement<MsGraphUserProfileProps> {
+    const {userProfile, photo, personaSize} = this.props;
+    
+     let userProfileCard =  ( userProfile &&
+      <UserProfileCard
+        name={userProfile.displayName}
+        jobTitle={userProfile.jobTitle}
+        emailAddress={userProfile.mail}
+        phoneNumber={userProfile.businessPhones.length >0 ? userProfile.businessPhones[0] : ''}
+        size={personaSize}
+        photoUrl={photo}
+     />);
     
     return (
-      <Customizer {...FluentCustomizations}>
       <div>
-        { userProfile &&
-        <UserProfileCard
-          name={userProfile.displayName}
-          jobTitle={userProfile.jobTitle}
-          emailAddress={userProfile.mail}
-          phoneNumber={userProfile.phone}
-          size={this.props.personaSize}
-          photoUrl={photoUrl}
-        />}
-      </div>
+      <Customizer {...FluentCustomizations}>      
+        {userProfileCard}
       </Customizer>
+      </div>
     );
   }
 }

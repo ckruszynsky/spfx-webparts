@@ -1,19 +1,17 @@
-import {ServiceKey, ServiceScope} from '@microsoft/sp-core-library';
-import {MSGraphClientFactory, MSGraphClient} from '@microsoft/sp-http';
+import * as MicrosoftGraph from '@microsoft/microsoft-graph-types';
+import { MSGraphClientFactory } from '@microsoft/sp-http';
+import * as strings from 'MsGraphUserProfileWebPartStrings';
 
 export class GraphService {
-    private ENDPOINT_URL:string = "https://graph.microsoft.com/v1.0/me";
-    
-
     constructor(private graphClientFactory:MSGraphClientFactory){}
 
-    public async getUserProfile():Promise<any>{
-        var client = await this.graphClientFactory.getClient();
-        var clientProfileResponse = await client.api(this.ENDPOINT_URL).get();        
-        
-        return {
-            profile: clientProfileResponse,
-            photo: `/_vti_bin/DelveApi.ashx/people/profileimage?size=L&userId=${clientProfileResponse.userPrincipalName} `
-        };
+    public async getUserProfile():Promise<MicrosoftGraph.User>{
+        const userProfileClient = await this.graphClientFactory.getClient();
+        const userProfileClientResponse = await userProfileClient.api(strings.GraphServiceURI).get();                
+        return userProfileClientResponse;        
+    }
+
+    public getProfilePhoto(userName:string ):string {        
+        return `/_vti_bin/DelveApi.ashx/people/profileimage?size=L&userId=${userName}`;
     }
 }

@@ -14,6 +14,7 @@
     "test:watch": "./node_modules/.bin/jest --config ./config/jest.config.json --watchAll"
   },
   "dependencies": {
+    "@microsoft/microsoft-graph-types": "^1.8.0",
     "@microsoft/sp-core-library": "1.8.1",
     "@microsoft/sp-lodash-subset": "1.8.1",
     "@microsoft/sp-office-ui-fabric-core": "1.8.1",

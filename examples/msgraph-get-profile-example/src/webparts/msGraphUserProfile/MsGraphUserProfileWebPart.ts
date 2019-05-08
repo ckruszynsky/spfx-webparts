@@ -1,36 +1,45 @@
-import { Environment, EnvironmentType, Version } from "@microsoft/sp-core-library";
-import { IPropertyPaneConfiguration } from "@microsoft/sp-property-pane";
-import { BaseClientSideWebPart, PropertyPaneDropdown } from "@microsoft/sp-webpart-base";
-import * as strings from "MsGraphUserProfileWebPartStrings";
-import { PersonaSize } from "office-ui-fabric-react/lib/Persona";
-import * as React from "react";
-import * as ReactDom from "react-dom";
+import * as MicrosoftGraph from '@microsoft/microsoft-graph-types';
+import { Environment, EnvironmentType, Version } from '@microsoft/sp-core-library';
+import { IPropertyPaneConfiguration } from '@microsoft/sp-property-pane';
+import { BaseClientSideWebPart, PropertyPaneDropdown } from '@microsoft/sp-webpart-base';
+import { CalloutTriggers } from '@pnp/spfx-property-controls/lib/PropertyFieldHeader';
+import { PropertyFieldToggleWithCallout } from '@pnp/spfx-property-controls/lib/PropertyFieldToggleWithCallout';
+import * as strings from 'MsGraphUserProfileWebPartStrings';
+import { PersonaSize } from 'office-ui-fabric-react/lib/Persona';
+import * as React from 'react';
+import * as ReactDom from 'react-dom';
 
-import { GraphService } from "../../services/graphService";
-import { IMsGraphUserProfileProps } from "./components/MsGraphUserProfile/IMsGraphUserProfileProps";
-import MsGraphUserProfile from "./components/MsGraphUserProfile/MsGraphUserProfile";
-import { CalloutTriggers } from "@pnp/spfx-property-controls/lib/PropertyFieldHeader";
-import { PropertyFieldToggleWithCallout } from "@pnp/spfx-property-controls/lib/PropertyFieldToggleWithCallout";
+import { GraphService } from '../../services/graphService';
+import MsGraphUserProfile from './components/MsGraphUserProfile/MsGraphUserProfile';
 
 export interface IMsGraphUserProfileWebPartProps {
   showUserPhoto: boolean;
   personaSize: PersonaSize;
 }
+type MsGraphUserProfileProps = MsGraphUserProfile["props"];
 
-export default class MsGraphUserProfileWebPart extends BaseClientSideWebPart<
-  IMsGraphUserProfileWebPartProps
-> {
-  protected get disableReactivePropertyChanges(): boolean {
-    return false;
+export default class MsGraphUserProfileWebPart extends BaseClientSideWebPart<IMsGraphUserProfileWebPartProps> {
+  private _userInformation: MicrosoftGraph.User;
+  private _profilePhotoUrl: string = "";
+
+  public async onInit(): Promise<void> {
+    let graphService = new GraphService(this.context.msGraphClientFactory);
+    this._userInformation = await graphService.getUserProfile();
+    
+    if(this.properties.showUserPhoto){
+      this._profilePhotoUrl = graphService.getProfilePhoto(this._userInformation.userPrincipalName);
+    }
+    return;
   }
   public render(): void {
-    const userProfileProps: IMsGraphUserProfileProps = {
-      graphService: new GraphService(this.context.msGraphClientFactory),
-      showUserProfilePhoto: this.properties.showUserPhoto,
+
+    const userProfileProps: MsGraphUserProfileProps = {
+      userProfile: this._userInformation,
+      photo: this._profilePhotoUrl,
       personaSize: this.properties.personaSize
     };
 
-    const element: React.ReactElement<IMsGraphUserProfileProps> = React.createElement(
+    const element: React.ReactElement<MsGraphUserProfileProps> = React.createElement(
       MsGraphUserProfile,
       userProfileProps
     );
@@ -60,11 +69,7 @@ export default class MsGraphUserProfileWebPart extends BaseClientSideWebPart<
                   calloutTrigger: CalloutTriggers.Click,
                   key: strings.ShowPhotoTargetProperty,
                   label: strings.ShowPhotoLabel,
-                  calloutContent: React.createElement(
-                    "p",
-                    {},
-                    strings.ShowPhotoCalloutText
-                  ),
+                  calloutContent: React.createElement("p", {}, strings.ShowPhotoCalloutText),
                   onText: strings.ShowPhotoOnText,
                   offText: strings.ShowPhotoOffText,
                   checked: this.properties.showUserPhoto
@@ -88,11 +93,7 @@ export default class MsGraphUserProfileWebPart extends BaseClientSideWebPart<
     };
   }
 
-  protected onPropertyPaneFieldChanged(
-    propertyPath: string,
-    oldValue: any,
-    newValue: any
-  ): void {
+  protected onPropertyPaneFieldChanged(propertyPath: string, oldValue: any, newValue: any): void {
     if (oldValue !== newValue) {
       this.properties[propertyPath] = newValue;
       this.render();
