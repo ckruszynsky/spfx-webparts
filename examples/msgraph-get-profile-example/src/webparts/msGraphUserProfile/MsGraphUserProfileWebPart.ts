@@ -1,5 +1,5 @@
 import * as MicrosoftGraph from '@microsoft/microsoft-graph-types';
-import { Environment, EnvironmentType, Version } from '@microsoft/sp-core-library';
+import { Version } from '@microsoft/sp-core-library';
 import { IPropertyPaneConfiguration } from '@microsoft/sp-property-pane';
 import { BaseClientSideWebPart, PropertyPaneDropdown } from '@microsoft/sp-webpart-base';
 import { CalloutTriggers } from '@pnp/spfx-property-controls/lib/PropertyFieldHeader';
@@ -18,6 +18,39 @@ export interface IMsGraphUserProfileWebPartProps {
 }
 type MsGraphUserProfileProps = MsGraphUserProfile["props"];
 
+const showPhotoToggleField = PropertyFieldToggleWithCallout(strings.ShowPhotoTargetProperty, {
+  calloutTrigger: CalloutTriggers.Click,
+  key: strings.ShowPhotoTargetProperty,
+  label: strings.ShowPhotoLabel,
+  calloutContent: React.createElement("p", {}, strings.ShowPhotoCalloutText),
+  onText: strings.ShowPhotoOnText,
+  offText: strings.ShowPhotoOffText,
+  checked: this.properties.showUserPhoto
+});
+
+const personaSizeDropdownField = PropertyPaneDropdown(strings.PersonaSizeTargetProperty, {
+  label: strings.PersonaSizeLabel,
+  options: [
+    { key: PersonaSize.size24, text: "Extra Small" },
+    { key: PersonaSize.size40, text: "Small" },
+    { key: PersonaSize.size48, text: "Normal" },
+    { key: PersonaSize.size72, text: "Large" },
+    { key: PersonaSize.size100, text: "Extra Large" }
+  ],
+  selectedKey: PersonaSize.size48
+});
+
+const propertyPaneConfiguration = {
+  header: {
+    description: strings.PropertyPaneDescription
+  },
+  groups: [
+    {
+      groupFields: [showPhotoToggleField, personaSizeDropdownField]
+    }
+  ]
+};
+
 export default class MsGraphUserProfileWebPart extends BaseClientSideWebPart<IMsGraphUserProfileWebPartProps> {
   private _userInformation: MicrosoftGraph.User;
   private _profilePhotoUrl: string = "";
@@ -25,14 +58,13 @@ export default class MsGraphUserProfileWebPart extends BaseClientSideWebPart<IMs
   public async onInit(): Promise<void> {
     let graphService = new GraphService(this.context.msGraphClientFactory);
     this._userInformation = await graphService.getUserProfile();
-    
-    if(this.properties.showUserPhoto){
+
+    if (this.properties.showUserPhoto) {
       this._profilePhotoUrl = graphService.getProfilePhoto(this._userInformation.userPrincipalName);
     }
     return;
   }
   public render(): void {
-
     const userProfileProps: MsGraphUserProfileProps = {
       userProfile: this._userInformation,
       photo: this._profilePhotoUrl,
@@ -57,62 +89,13 @@ export default class MsGraphUserProfileWebPart extends BaseClientSideWebPart<IMs
 
   protected getPropertyPaneConfiguration(): IPropertyPaneConfiguration {
     return {
-      pages: [
-        {
-          header: {
-            description: strings.PropertyPaneDescription
-          },
-          groups: [
-            {
-              groupFields: [
-                PropertyFieldToggleWithCallout(strings.ShowPhotoTargetProperty, {
-                  calloutTrigger: CalloutTriggers.Click,
-                  key: strings.ShowPhotoTargetProperty,
-                  label: strings.ShowPhotoLabel,
-                  calloutContent: React.createElement("p", {}, strings.ShowPhotoCalloutText),
-                  onText: strings.ShowPhotoOnText,
-                  offText: strings.ShowPhotoOffText,
-                  checked: this.properties.showUserPhoto
-                }),
-                PropertyPaneDropdown(strings.PersonaSizeTargetProperty, {
-                  label: strings.PersonaSizeLabel,
-                  options: [
-                    { key: PersonaSize.size24, text: "Extra Small" },
-                    { key: PersonaSize.size40, text: "Small" },
-                    { key: PersonaSize.size48, text: "Normal" },
-                    { key: PersonaSize.size72, text: "Large" },
-                    { key: PersonaSize.size100, text: "Extra Large" }
-                  ],
-                  selectedKey: PersonaSize.size48
-                })
-              ]
-            }
-          ]
-        }
-      ]
+      pages: [propertyPaneConfiguration]
     };
   }
 
   protected onPropertyPaneFieldChanged(propertyPath: string, oldValue: any, newValue: any): void {
     if (oldValue !== newValue) {
       this.properties[propertyPath] = newValue;
-      this.render();
-    }
-  }
-  /**
-   * Provides logic to update web part properties and initiate re-render
-   * @param targetProperty property that has been changed
-   * @param newValue new value of the property
-   */
-  public onCustomPropertyPaneFieldChanged(targetProperty: string, newValue: any) {
-    const oldValue = this.properties[targetProperty];
-    this.properties[targetProperty] = newValue;
-
-    this.onPropertyPaneFieldChanged(targetProperty, oldValue, newValue);
-
-    // NOTE: in local workbench onPropertyPaneFieldChanged method initiates re-render
-    // in SharePoint environment we need to call re-render by ourselves
-    if (Environment.type !== EnvironmentType.Local) {
       this.render();
     }
   }
