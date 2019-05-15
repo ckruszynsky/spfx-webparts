@@ -1,6 +1,6 @@
-import { UserProfile } from '../../../models';
+import { UserProfile } from '../../models';
 
-export interface IUsersService {
+export interface IUserProfileService {
     getCurrentUser: () => Promise<UserProfile>;
     getUserPhoto: (username:string) => Promise<string>;
 }

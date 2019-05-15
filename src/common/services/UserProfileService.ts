@@ -1,14 +1,14 @@
 import { ServiceKey, ServiceScope } from '@microsoft/sp-core-library';
 import { MSGraphClientFactory } from '@microsoft/sp-http';
-import { constructor } from 'react';
 
-import { IUsersService } from '.';
-import { UserProfile } from '../../../models/user-profile';
+import { UserProfile } from '../models';
+import { IUserProfileService } from './contracts/IUserProfileService';
 
-export default class UsersService implements IUsersService {
-  public static readonly serviceKey: ServiceKey<IUsersService> = ServiceKey.create<IUsersService>(
+
+export default class UserProfileService implements IUserProfileService {
+  public static readonly serviceKey: ServiceKey<IUserProfileService> = ServiceKey.create<IUserProfileService>(
     "spfx-webparts:IUsersService",
-    UsersService
+    UserProfileService
   );
 
   private _msGraphClientFactory: MSGraphClientFactory;

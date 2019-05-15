@@ -4,7 +4,7 @@ import { PersonaSize } from 'office-ui-fabric-react/lib/Persona';
 import * as React from 'react';
 import { SFC } from 'react';
 
-import { UserProfileCard } from '../../../common/components/user-profile-card';
+import { UserProfileCard } from '../../../common/components';
 import { UserProfile } from '../../../common/models';
 
 export type UserInformationProps = {

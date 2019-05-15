@@ -9,7 +9,7 @@ import * as ReactDom from 'react-dom';
 import * as strings from 'UserInformationWebPartStrings';
 
 import { UserProfile } from '../../common/models';
-import UsersService from '../../common/services/graph/users/UsersService';
+import UsersService from '../../common/services/UserProfileService';
 import UserInformation, { UserInformationProps } from './components/UserInformation';
 
 export interface IUserInformationWebPartProps {
@@ -22,11 +22,11 @@ export default class UserInformationWebPart extends BaseClientSideWebPart<IUserI
   private photoUrl: string;
 
   public async onInit(): Promise<void> {
-    const usersService = this.context.serviceScope.consume(UsersService.serviceKey);
-    this.currentUser = await usersService.getCurrentUser();
+    const userProfileService = this.context.serviceScope.consume(UsersService.serviceKey);
+    this.currentUser = await userProfileService.getCurrentUser();
 
     if (this.properties.showUserPhoto) {
-      this.photoUrl = await usersService.getUserPhoto(this.currentUser.emailAddress);
+      this.photoUrl = await userProfileService.getUserPhoto(this.currentUser.emailAddress);
     }
   }
   public render(): void {
